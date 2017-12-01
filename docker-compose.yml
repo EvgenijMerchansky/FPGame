@@ -9,7 +9,12 @@ services:
     volumes:
       - ./server:/usr/src/app/server
       - ./client/src:/usr/src/app/client/src
+      - ./client/dist:/usr/src/app/client/dist
   mongo:
     image: "mongo"
     ports:
      - "27017:27017"
+
+
+# in package.json -> npm run run
+# if you want to stop server on click ctrl + c ? delete flag -d : null
