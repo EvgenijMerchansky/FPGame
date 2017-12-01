@@ -7,9 +7,12 @@
     "start-server": "nodemon --use-strict server/app.js",
     "bundle": "webpack -w",
     "docker-build": "docker-compose build",
-    "docker-up": "docker-compose up -d",
-    "compose": "npm run docker-build && npm run docker-up",
-    "run": "npm run compose && npm run bundle"
+    "docker-up-dev": "docker-compose up -d",
+    "docker-up-prod": "docker-compose up",
+    "compose-dev": "npm run docker-build && npm run docker-up-dev",
+    "compose-prod": "npm run docker-build && npm run docker-up-prod",
+    "dev": "npm run compose-dev && npm run bundle",
+    "prod": "npm run compose-prod"
   },
   "repository": {
     "type": "git",

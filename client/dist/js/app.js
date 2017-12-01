@@ -37317,7 +37317,7 @@
 	        _react2.default.createElement(
 	          _reactRouter.IndexLink,
 	          { to: '/' },
-	          'React App 2.0.0.0'
+	          'React App 2.0.0'
 	        )
 	      ),
 	      _Auth2.default.isUserAuthenticated() ? _react2.default.createElement(
