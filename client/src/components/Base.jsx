@@ -7,7 +7,7 @@ const Base = ({ children }) => (
   <div>
     <div className="top-bar">
       <div className="top-bar-left">
-        <IndexLink to="/">React App 2.0.0</IndexLink>
+        <IndexLink to="/">React App 2.0.0.0</IndexLink>
       </div>
 
       {Auth.isUserAuthenticated() ? (
@@ -20,7 +20,6 @@ const Base = ({ children }) => (
           <Link to="/signup">Sign up</Link>
         </div>
       )}
-
     </div>
 
     { /* child component will be rendered here */ }
