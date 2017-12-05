@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config/index');
+const port = 9000;
+const sockets = require('./sockets/sockets');
 
 // connect to the database and load models
 require('./models/index').connect(config.dbUri);
@@ -31,8 +33,9 @@ const apiRoutes = require('./routes/api');
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 
-
 // start the server
-app.listen(9000, () => {
+let server = app.listen(port, () => {
   console.log('Server is running on http://localhost:9000 or http://127.0.0.1:9000');
 });
+
+sockets(server);

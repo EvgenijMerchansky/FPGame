@@ -2,9 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
-export const StoreProvider = (props) => {
-
-    let {store, history, routes} = props;
+export const StoreProvider = ({store, history, routes}) => {
 
     return (
         <Provider store={ store }>

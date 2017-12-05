@@ -1,5 +1,5 @@
 const path = require('path');
-
+const extractSass = require('sass-extract');
 
 module.exports = {
   // the entry file for the bundle
@@ -22,6 +22,7 @@ module.exports = {
         presets: ["react", "es2015"]
       }
     }],
+
   },
 
   // start Webpack in a watch mode, so Webpack will rebuild the bundle on changes
