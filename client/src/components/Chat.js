@@ -23,9 +23,6 @@ class Chat extends Component {
     }
 
     sendText (value) {
-
-        console.log(this.state.messageArray);
-
         if (value === '') return;
 
         this.socket.emit('new message', { data: value });
@@ -34,7 +31,6 @@ class Chat extends Component {
     };
 
     render () {
-        console.log(this);
         return (
             <div className="chat-container">
                 <h1 className="chat-title">This is chat'aaaa!</h1>
