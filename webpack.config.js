@@ -1,5 +1,6 @@
 const path = require('path');
 const extractSass = require('sass-extract');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // the entry file for the bundle
@@ -24,6 +25,12 @@ module.exports = {
     }],
 
   },
+  plugins: [
+      new HtmlWebpackPlugin({
+          title: 'FPGame',
+          filename: '../index.html'
+      })
+  ],
 
   // start Webpack in a watch mode, so Webpack will rebuild the bundle on changes
   watch: true

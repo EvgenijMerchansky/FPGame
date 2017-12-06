@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
-import Chat from './Chat';
+import Chat from '../containers/Chat';
 
 const Dashboard = ({ secretData }) => (
   <Card className="container">
