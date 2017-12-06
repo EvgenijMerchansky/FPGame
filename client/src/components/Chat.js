@@ -6,15 +6,11 @@ class Chat extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:9000/');
+        this.socket = io();
         this.currentUser = '';
         this.state = {
             messageArray: []
         };
-    }
-
-    componentWillUnmount () {
-        this.socket.emit('disconnect');
     }
 
     componentDidMount () {
@@ -28,16 +24,17 @@ class Chat extends Component {
 
     sendText (value) {
 
+        console.log(this.state.messageArray);
+
         if (value === '') return;
 
-        this.socket.emit('SEND_MESSAGE', {
-            data: value,
-        });
+        this.socket.emit('new message', { data: value });
 
         this.input.value = '';
     };
 
     render () {
+        console.log(this);
         return (
             <div className="chat-container">
                 <h1 className="chat-title">This is chat'aaaa!</h1>

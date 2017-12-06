@@ -41057,7 +41057,7 @@
 
 	        var _this = _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this, props));
 
-	        _this.socket = (0, _socket2.default)('http://localhost:9000/');
+	        _this.socket = (0, _socket2.default)();
 	        _this.currentUser = '';
 	        _this.state = {
 	            messageArray: []
@@ -41066,11 +41066,6 @@
 	    }
 
 	    _createClass(Chat, [{
-	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {
-	            this.socket.emit('disconnect');
-	        }
-	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var _this2 = this;
@@ -41086,11 +41081,11 @@
 	        key: 'sendText',
 	        value: function sendText(value) {
 
+	            console.log(this.state.messageArray);
+
 	            if (value === '') return;
 
-	            this.socket.emit('SEND_MESSAGE', {
-	                data: value
-	            });
+	            this.socket.emit('new message', { data: value });
 
 	            this.input.value = '';
 	        }
@@ -41099,6 +41094,7 @@
 	        value: function render() {
 	            var _this3 = this;
 
+	            console.log(this);
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'chat-container' },
