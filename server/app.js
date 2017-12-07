@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const config = require('./config/index');
 const port = 9000;
+const path = require('path');
 const sockets = require('./sockets/sockets');
 
 // connect to the database and load models
@@ -10,8 +11,8 @@ require('./models/index').connect(config.dbUri);
 
 const app = express();
 // tell the app to look for static files in these directories
-app.use(express.static('./server/static/'));
-app.use(express.static('./client/dist/'));
+app.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
+// app.use(express.static(path.resolve(__dirname, '..', 'client', 'style.css')));
 // tell the app to parse HTTP body messages
 app.use(bodyParser.urlencoded({ extended: false }));
 // pass the passport middleware

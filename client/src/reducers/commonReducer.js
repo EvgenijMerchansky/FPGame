@@ -1,9 +1,12 @@
-const initialState = [];
+const initialState = {
+    messages: [],
+
+};
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'COMMON':
-            return state;
+        case 'CUSTOM_MIDDLEWARE':
+            return Object.assign({}, state, {messages: [...state.messages, action.payload]});
         break;
         default:
             return state;

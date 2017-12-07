@@ -1,6 +1,6 @@
 const path = require('path');
-const extractSass = require('sass-extract');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   // the entry file for the bundle
@@ -13,25 +13,34 @@ module.exports = {
   },
 
   module: {
-
     // apply loaders to files that meet given conditions
-    loaders: [{
-      test: /\.jsx?$/,
-      include: path.join(__dirname, '/client/src'),
-      loader: 'babel',
-      query: {
-        presets: ["react", "es2015"]
-      }
-    }],
-
+    loaders: [
+        {
+            test: /.scss$/,
+            use: ExtractTextPlugin.extract({fallback: 'style-loader',
+                use: ["css-loader", "sass-loader"]
+            })
+        },
+        {
+          test: /\.jsx?$/,
+          include: path.join(__dirname, '/client/src'),
+          loader: 'babel',
+          query: {
+              presets: ["react", "es2015"]
+          }
+        }
+    ],
   },
   plugins: [
+      new ExtractTextPlugin("styles.css"),
       new HtmlWebpackPlugin({
           title: 'FPGame',
-          filename: '../index.html'
+          template: './template.html',
+          filename: '../index.html',
       })
   ],
 
   // start Webpack in a watch mode, so Webpack will rebuild the bundle on changes
-  watch: true
+  watch: true,
+  devtool: 'cheap-eval-source-map'
 };

@@ -1,17 +1,13 @@
 import React from 'react';
 
-const Item = ({id, data, dataUser}) => {
+const Item = ({messageId, textMessage}) => {
 
     return (
         <p
-           style={{
-               marginLeft: id === dataUser && '52%',
-               marginRight: id !== dataUser && '52%'
-           }}
            className="simple-li"
-           id={id}
+           id={messageId}
         >
-            {data}
+            {textMessage}
         </p>
     )
 };

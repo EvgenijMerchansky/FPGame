@@ -10,7 +10,7 @@ module.exports = (server) => {
         connectCounter++;
         console.log(socket.id,'- new USER(id). online users -', connectCounter);
 
-        socket.on('new message', (data) => {
+        socket.on('NEW_MESSAGE', (data) => {
             console.log(socket.id, '- say: ', data);
             data.id = socket.id;
             data.index = connectCounter++;

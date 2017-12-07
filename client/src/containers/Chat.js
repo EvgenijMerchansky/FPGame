@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import io from "socket.io-client";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Item from '../components/Item';
+
+import { sendToChat } from '../actions/basic-actions';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io();
         this.currentUser = '';
         this.state = {
             messageArray: []
@@ -14,35 +16,38 @@ class Chat extends Component {
     }
 
     componentDidMount () {
-        this.socket.on("RECEIVE_MESSAGE", (data) => {
-            this.currentUser = data.id;
-            this.setState({
-                messageArray: [...this.state.messageArray, data]
-            });
-        });
+        // this.socket.on("RECEIVE_MESSAGE", (data) => {
+        //     this.currentUser = data.id;
+        //     this.setState({
+        //         messageArray: [...this.state.messageArray, data]
+        //     });
+        // });
     }
 
-    sendText (value) {
-        if (value === '') return;
+    sendText (textValue) {
+        if (textValue === '') return;
 
-        this.socket.emit('new message', { data: value });
+        let { sendToChat } = this.props;
 
+        sendToChat('NEW_MESSAGE', { data: textValue });
+        // this.socket.emit('new message', { data: textValue });
         this.input.value = '';
     };
 
     render () {
+        console.log(this);
         return (
             <div className="chat-container">
-                <h1 className="chat-title">This is chat'aaaa!</h1>
+                <h1 className="chat-title">This is chat</h1>
                 <div className="message-block">
                     {
-                        this.state.messageArray.map(item => {
+                        this.props.chatState.map(userArrayItem => {
+                            console.log(userArrayItem);
                             return (
                                 <Item
-                                    id={item.id}
-                                    key={item.index}
-                                    data={item.data}
-                                    dataUser={this.currentUser}
+                                    messageId={userArrayItem.id}
+                                    key={userArrayItem.id}
+                                    textMessage={userArrayItem.text}
                                 />
                             )
                         })
@@ -69,4 +74,17 @@ class Chat extends Component {
     }
 }
 
-export default Chat;
+const mapStateToProps = (state) => {
+    return {
+        chatState: state.commonReducer.messages,
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        sendToChat
+        // - - -
+    }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

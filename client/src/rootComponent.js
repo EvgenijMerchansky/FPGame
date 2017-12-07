@@ -4,7 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { browserHistory, Router } from 'react-router';
 import routes from './routes.js';
-import store from './store';
+import { store } from './store';
 
 import { StoreProvider } from './storeProvider';
 
