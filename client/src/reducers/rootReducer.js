@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import commonReducer from './commonReducer';
+import newMessageReducer from './newMessageReducer';
 
 const rootReducer = combineReducers({
-    commonReducer,
+    newMessageReducer,
     // - - -
 });
 

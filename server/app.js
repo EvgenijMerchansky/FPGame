@@ -5,6 +5,8 @@ const config = require('./config/index');
 const port = 9000;
 const path = require('path');
 const sockets = require('./sockets/sockets');
+const User = require('./models/user');
+
 
 // connect to the database and load models
 require('./models/index').connect(config.dbUri);
@@ -29,10 +31,17 @@ const authCheckMiddleware = require('./middleware/auth-check');
 app.use('/api', authCheckMiddleware);
 
 // routes
-const authRoutes = require('./routes/auth');
-const apiRoutes = require('./routes/api');
+const authRoutes = require('./routes/router');
+// const apiRoutes = require('./routes/api');
 app.use('/auth', authRoutes);
-app.use('/api', apiRoutes);
+
+app.get('/users', (req, res) => {
+
+    let users = User.find({}, (err, docs) => docs);
+
+    users.then(data => res.send(data));
+});
+// app.use('/api', apiRoutes);
 
 // start the server
 let server = app.listen(port, () => {

@@ -38,6 +38,7 @@ module.exports = {
           template: './template.html',
           filename: '../index.html',
       })
+
   ],
 
   // start Webpack in a watch mode, so Webpack will rebuild the bundle on changes

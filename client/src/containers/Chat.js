@@ -3,34 +3,28 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Item from '../components/Item';
 
-import { sendToChat } from '../actions/basic-actions';
+import { sendToChat, getUsers } from '../actions/basic-actions';
+
 
 class Chat extends Component {
-    constructor(props) {
-        super(props);
-
-        this.currentUser = '';
-        this.state = {
-            messageArray: []
-        };
+    constructor() {
+        super();
     }
 
     componentDidMount () {
-        // this.socket.on("RECEIVE_MESSAGE", (data) => {
-        //     this.currentUser = data.id;
-        //     this.setState({
-        //         messageArray: [...this.state.messageArray, data]
-        //     });
-        // });
+        let { getUsers } = this.props,
+            usersFromBase = getUsers();
+
+        console.log(usersFromBase, 'usersFromBase');
+        // sendToChat({eventName: 'NEW_MESSAGE', data: textValue});
     }
 
     sendText (textValue) {
-        if (textValue === '') return;
-
         let { sendToChat } = this.props;
 
-        sendToChat('NEW_MESSAGE', { data: textValue });
-        // this.socket.emit('new message', { data: textValue });
+        if (textValue === '') return;
+
+        sendToChat({eventName: 'NEW_MESSAGE', data: textValue});
         this.input.value = '';
     };
 
@@ -38,11 +32,12 @@ class Chat extends Component {
         console.log(this);
         return (
             <div className="chat-container">
-                <h1 className="chat-title">This is chat</h1>
+                <h1 className="chat-title">
+                    This is chat
+                </h1>
                 <div className="message-block">
                     {
-                        this.props.chatState.map(userArrayItem => {
-                            console.log(userArrayItem);
+                        this.props.renderMessages.map(userArrayItem => {
                             return (
                                 <Item
                                     messageId={userArrayItem.id}
@@ -76,13 +71,14 @@ class Chat extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        chatState: state.commonReducer.messages,
+        renderMessages: state.newMessageReducer.newMessages,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-        sendToChat
+        sendToChat,
+        getUsers
         // - - -
     }, dispatch);
 };
