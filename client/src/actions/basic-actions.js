@@ -80,7 +80,6 @@ export const addUsersFromDataBase = ({users, adding}) => {
 
     axios.get('/users')
         .then(data => {
-
             if (users.length === 0) {
                 adding(data.data);
             }

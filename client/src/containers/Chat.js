@@ -7,6 +7,7 @@ import MessageBox from '../components/MessageBox';
 
 class Chat extends Component {
     constructor() {
+
         super();
     }
 
@@ -14,7 +15,6 @@ class Chat extends Component {
 
         this.currentUser = localStorage.getItem('currentUser');
     }
-
 
     sendText (textValue) {
 
@@ -36,8 +36,6 @@ class Chat extends Component {
     render () {
 
         let { users, newMessages } = this.props.renderMessages;
-
-        console.log(users, 'onlineUsers onlineUsers');
         return (
             <div className="chat-container">
                 <h1 className="chat-title">

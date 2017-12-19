@@ -14,6 +14,7 @@ const socketMiddlewere = (socket, requestEventName) => store => {
             });
         });
 
+
         socket.on('RECEIVE_NEW_USER', newUsersObject => {
 
             next({
@@ -21,6 +22,14 @@ const socketMiddlewere = (socket, requestEventName) => store => {
                 payload: newUsersObject
             })
         });
+
+        // socket.on('USER_FOR_DELETING', userForDeleting => {
+        //
+        //     next({
+        //         type: 'DELETE_USER',
+        //         payload: userForDeleting,
+        //     })
+        // });
 
         socket.on('RECEIVE_UPDATED_USERS', updatedUsers => {
 
@@ -39,9 +48,10 @@ const socketMiddlewere = (socket, requestEventName) => store => {
         });
 
         return action => {
+            console.log(action, 'action action'); // actions logger
 
             if (action.nickname && action.nickname) {
-                socket.emit('CONNECT_NEW_USER', action.payload); // object
+                socket.emit('CONNECT_NEW_USER', action.payload);// object
             } else if (action.meta && action.meta) {
                 socket.emit("NEW_MESSAGE", action.payload.text);
             } else if (action.withBase && action.withBase) {

@@ -5,9 +5,8 @@ const config = require('./config/index');
 const port = 9000;
 const path = require('path');
 const sockets = require('./sockets/sockets');
-
-const User = require('./models/user');
-
+const onlineStatus = require('./requestsControllers/onlineStatusController');
+const allUsersController = require('./requestsControllers/allUsersController');
 // connect to the database and load models
 require('./models/index').connect(config.dbUri);
 
@@ -35,25 +34,12 @@ app.use(bodyParser.json());
 const authRoutes = require('./routes/router');
 app.use('/auth', authRoutes);
 
-app.get('/users', (req, res) => {
-    let users = User.find({}, (err, docs) => docs);
+// requests
+app.get('/users', allUsersController.getAllUsers);
 
-    users.then(data => res.send(data));
-});
+app.post('/enableOnlineStatus', onlineStatus.enableOnline);
 
-app.post('/enableOnlineStatus', (req, res) => {
-
-    User.updateOne({email: req.body.email}, {online: true}, (err, doc) => {
-        if (err) throw err;
-    })
-});
-
-app.post('/disableOnlineStatus', (req, res) => {
-
-    User.updateOne({email: req.body.email}, {online: false}, (err, doc) => {
-        if (err) throw err;
-    })
-});
+app.post('/disableOnlineStatus', onlineStatus.disableOnline);
 
 // start the server
 let server = app.listen(port, () => {
