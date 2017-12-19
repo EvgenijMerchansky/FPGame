@@ -1,25 +1,32 @@
 const socket = require('socket.io');
 
 module.exports = (server) => {
-    let connectCounter = 0;
-
     const io = socket(server);
 
     io.sockets.on('connect', (socket) => {
 
-        connectCounter++;
-        console.log(socket.id,'- new USER(id). online users -', connectCounter);
+        socket.on('CONNECT_NEW_USER', (connectNewUsers) => {
 
-        socket.on('NEW_MESSAGE', (data) => {
-            console.log(socket.id, '- say: ', data);
-            data.id = socket.id;
-            data.index = connectCounter++;
-            io.emit('RECEIVE_MESSAGE', data);
+            io.emit('RECEIVE_NEW_USER', connectNewUsers);
+        });
+
+        socket.on('ADD_USERS_TO_SOCKET', (usersWithBase) => {
+
+            io.emit('RECEIVE_USERS_TO_SOCKET', usersWithBase);
+        });
+
+        socket.on('UPDATE_USERS_TO_SOCKET', (newUsers) => {
+
+            io.emit('RECEIVE_UPDATED_USERS', newUsers);
+        });
+
+        socket.on('NEW_MESSAGE', (textData) => {
+
+            io.emit('RECEIVE_MESSAGE', textData);
         });
 
         socket.on('disconnect', () => {
-            connectCounter--;
-            console.log(socket.id,'- new USER(id). online users -', connectCounter);
+            console.log('disconnected')
         });
     });
 };

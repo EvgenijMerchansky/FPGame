@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import SignUpForm from '../components/SignUpForm.jsx';
 
-
 class SignUpPage extends React.Component {
 
   /**
@@ -37,7 +36,8 @@ class SignUpPage extends React.Component {
     const name = encodeURIComponent(this.state.user.name);
     const email = encodeURIComponent(this.state.user.email);
     const password = encodeURIComponent(this.state.user.password);
-    const formData = `name=${name}&email=${email}&password=${password}`;
+
+    const formData = `name=${name}&email=${email}&password=${password}&online=${false}`;
 
     // create an AJAX request
     const xhr = new XMLHttpRequest();
@@ -91,7 +91,7 @@ class SignUpPage extends React.Component {
    * Render the component.
    */
   render() {
-    return (
+      return (
       <SignUpForm
         onSubmit={this.processForm}
         onChange={this.changeUser}

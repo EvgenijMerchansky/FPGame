@@ -5,8 +5,8 @@ const config = require('./config/index');
 const port = 9000;
 const path = require('path');
 const sockets = require('./sockets/sockets');
-const User = require('./models/user');
 
+const User = require('./models/user');
 
 // connect to the database and load models
 require('./models/index').connect(config.dbUri);
@@ -16,7 +16,7 @@ const app = express();
 app.use(express.static(path.resolve(__dirname, '..', 'client', 'dist')));
 // app.use(express.static(path.resolve(__dirname, '..', 'client', 'style.css')));
 // tell the app to parse HTTP body messages
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 // pass the passport middleware
 app.use(passport.initialize());
 
@@ -29,19 +29,31 @@ passport.use('local-login', localLoginStrategy);
 // pass the authorization checker middleware
 const authCheckMiddleware = require('./middleware/auth-check');
 app.use('/api', authCheckMiddleware);
+app.use(bodyParser.json());
 
 // routes
 const authRoutes = require('./routes/router');
-// const apiRoutes = require('./routes/api');
 app.use('/auth', authRoutes);
 
 app.get('/users', (req, res) => {
-
     let users = User.find({}, (err, docs) => docs);
 
     users.then(data => res.send(data));
 });
-// app.use('/api', apiRoutes);
+
+app.post('/enableOnlineStatus', (req, res) => {
+
+    User.updateOne({email: req.body.email}, {online: true}, (err, doc) => {
+        if (err) throw err;
+    })
+});
+
+app.post('/disableOnlineStatus', (req, res) => {
+
+    User.updateOne({email: req.body.email}, {online: false}, (err, doc) => {
+        if (err) throw err;
+    })
+});
 
 // start the server
 let server = app.listen(port, () => {

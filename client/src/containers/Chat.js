@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Item from '../components/Item';
-
-import { sendToChat, getUsers } from '../actions/basic-actions';
-
+import { sendToChat, deleteUser, sendUpdatedUsersWithBase, updateUsersFromDataBase } from '../actions/basic-actions';
+import UserList from '../components/UsersList';
+import MessageBox from '../components/MessageBox';
 
 class Chat extends Component {
     constructor() {
@@ -12,42 +11,40 @@ class Chat extends Component {
     }
 
     componentDidMount () {
-        let { getUsers } = this.props,
-            usersFromBase = getUsers();
 
-        console.log(usersFromBase, 'usersFromBase');
-        // sendToChat({eventName: 'NEW_MESSAGE', data: textValue});
+        this.currentUser = localStorage.getItem('currentUser');
     }
 
+
     sendText (textValue) {
-        let { sendToChat } = this.props;
 
         if (textValue === '') return;
 
-        sendToChat({eventName: 'NEW_MESSAGE', data: textValue});
+        this.props.sendToChat({eventName: 'NEW_MESSAGE', data: textValue});
         this.input.value = '';
     };
 
+    componentWillUnmount() {
+
+        if (this.currentUser) {
+            deleteUser(this.currentUser);
+
+            updateUsersFromDataBase(this.props.sendUpdatedUsersWithBase);
+        }
+    }
+
     render () {
-        console.log(this);
+
+        let { users, newMessages } = this.props.renderMessages;
+
+        console.log(users, 'onlineUsers onlineUsers');
         return (
             <div className="chat-container">
                 <h1 className="chat-title">
                     This is chat
                 </h1>
-                <div className="message-block">
-                    {
-                        this.props.renderMessages.map(userArrayItem => {
-                            return (
-                                <Item
-                                    messageId={userArrayItem.id}
-                                    key={userArrayItem.id}
-                                    textMessage={userArrayItem.text}
-                                />
-                            )
-                        })
-                    }
-                </div>
+                <MessageBox messagesArray={newMessages} author={this.currentUser}/>
+                <UserList onlineUserArray={users}/>
                 <div className="control-container">
                     <textarea
                         className="message-field"
@@ -71,14 +68,14 @@ class Chat extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        renderMessages: state.newMessageReducer.newMessages,
+        renderMessages: state.newMessageReducer,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         sendToChat,
-        getUsers
+        sendUpdatedUsersWithBase
         // - - -
     }, dispatch);
 };

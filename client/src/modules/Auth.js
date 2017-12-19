@@ -1,12 +1,17 @@
-class Auth {
+import io from "socket.io-client";
+const socket = io();
 
+class Auth {
   /**
    * Authenticate a user. Save a token string in Local Storage
    *
    * @param {string} token
    */
-  static authenticateUser(token) {
+  static authenticateUser(token, currentUser) {
     localStorage.setItem('token', token);
+    if (localStorage.getItem('token')) {
+        localStorage.setItem('currentUser', currentUser);
+    }
   }
 
   /**
@@ -24,6 +29,7 @@ class Auth {
    */
   static deauthenticateUser() {
     localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
   }
 
   /**
